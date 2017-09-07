@@ -2,18 +2,23 @@
 
 const
     colors = require('colors'),
-    yaml = require('js-yaml'),
-    fs = require('fs'),
-    commands = require('./src/modules/commands');
+    commands = require('./src/modules/commands'),
+    project = require('./src/modules/project');
 
 module.exports = {
-    start: function() {
+    init: function() {
         try{
-            var commandsModule = commands.start();
-            var doc = yaml.safeLoad(fs.readFileSync(commandsModule.getFile(), 'utf8'));
-            console.log(doc);
+            commands.init();
+
+            if(commands.getGenerator() == 'project')
+                project.init(commands);
+            else if(commands.getGenerator() == 'module')
+                console.log('Module Generator is not supported at this moment'.yellow);
+            else
+                throw 'Please, specify a valid generator in the --generate,-g argument (project|module)';
+
         }catch(e){
-            var errorMessage = 'ERROR: ' + e;
+            let errorMessage = 'ERROR: ' + e;
             console.error(errorMessage.red);
         }
     }

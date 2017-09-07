@@ -17,7 +17,7 @@ const optionsValidation = {
 };
 
 var commands = {
-    start: function() {
+    init: function() {
         this.options = commandLineArgs(optionsDefinitions);
         this.validateArguments();
 
@@ -30,7 +30,7 @@ var commands = {
         // Validate required arguments
         Object.keys(optionsValidation).map(function(argument){
 
-            var validation = optionsValidation[argument];
+            let validation = optionsValidation[argument];
             if(validation == 'required' && !this.options[argument]) {
                 validated = false;
                 console.error('The ' + argument.yellow + ' argument is required!');

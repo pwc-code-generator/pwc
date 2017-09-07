@@ -17,9 +17,11 @@
   "author": "Tiago Silva Pereira Rodrigues",
   "license": "MIT",
   "dependencies": {
+    "change-case": "^3.0.1",
     "colors": "^1.1.2",
     "command-line-args": "^4.0.7",
     "dot": "^1.1.2",
-    "js-yaml": "^3.9.1"
+    "js-yaml": "^3.9.1",
+    "pluralize": "^7.0.0"
   }
 }
