@@ -9,6 +9,14 @@ class Model {
         this.parsedModel = parsedModel;
         this.pluralize = pluralizeModule;
         this.changeCase = changeCaseModule;
+
+        this.onlyModel = this.parsedModel.onlyModel || false;
+    }
+
+    removeUnwantedAttributes() {
+        delete this.parsedModel;
+        delete this.pluralize;
+        delete this.changeCase;
     }
 
     buildNames() {

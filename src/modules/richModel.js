@@ -12,6 +12,8 @@ var richModel = {
             this.model.buildNames();
             this.model.buildDescription();
 
+            this.model.removeUnwantedAttributes();
+
             return this.model;
         }catch(e){
             throw 'Problem with the model "' + modelName.yellow + '". '.red + e.red;
