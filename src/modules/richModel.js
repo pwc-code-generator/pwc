@@ -11,6 +11,7 @@ var richModel = {
             this.model = new Model(parsedModel);
             this.model.buildNames();
             this.model.buildDescription();
+            this.model.setupFields();
 
             this.model.removeUnwantedAttributes();
 

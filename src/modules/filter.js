@@ -24,11 +24,11 @@ var filter = {
     initModels: function() {
         this.validateProjectHasModels();
 
-        Object.keys(this.parsedProject.models).map(function(modelName){
+        Object.keys(this.parsedProject.models).map((modelName) => {
             let parsedModel = this.parsedProject.models[modelName];
             let model = richModel.init(modelName, parsedModel);
-            console.log(model);
-        }.bind(this));
+            console.log(model.fields);
+        });
     },
 
     validateProjectHasModels: function() {

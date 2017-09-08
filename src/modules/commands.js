@@ -28,7 +28,7 @@ var commands = {
         var validated = true;
 
         // Validate required arguments
-        Object.keys(optionsValidation).map(function(argument){
+        Object.keys(optionsValidation).map((argument) => {
 
             let validation = optionsValidation[argument];
             if(validation == 'required' && !this.options[argument]) {
@@ -36,7 +36,7 @@ var commands = {
                 console.error('The ' + argument.yellow + ' argument is required!');
             }
 
-        }.bind(this));
+        });
 
         if(!validated) throw 'Specific arguments are required!';
     },

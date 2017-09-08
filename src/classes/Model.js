@@ -1,4 +1,7 @@
 const
+    // Classes
+    Field = require('./Field'),
+
     // Modules
     pluralize = require('pluralize'),
     changeCase = require('change-case');
@@ -7,16 +10,13 @@ class Model {
 
     constructor(parsedModel, pluralizeModule, changeCaseModule) {
         this.parsedModel = parsedModel;
-        this.pluralize = pluralizeModule;
-        this.changeCase = changeCaseModule;
 
         this.onlyModel = this.parsedModel.onlyModel || false;
+        this.fields = [];
     }
 
     removeUnwantedAttributes() {
         delete this.parsedModel;
-        delete this.pluralize;
-        delete this.changeCase;
     }
 
     buildNames() {
@@ -82,6 +82,33 @@ class Model {
 
         this.descriptionArticle = descriptionArticle[0];
         this.descriptionArticlePlural = descriptionArticle[1];
+    }
+
+    getDescription() {
+        return this.description;
+    }
+
+    getDescriptionPlural() {
+        return this.descriptionPlural;
+    }
+
+    getDescriptionArticle() {
+        return this.descriptionArticle;
+    }
+
+    getDescriptionArticlePlural() {
+        return this.descriptionArticlePlural;
+    }
+
+    setupFields() {
+        let fields = this.parsedModel.fields;
+        Object.keys(fields).map((fieldName) => {
+            let parsedField = fields[fieldName];
+                parsedField.name = fieldName;
+
+            let field = new Field(parsedField);
+            this.fields.push(field);
+        });
     }
 
 }
