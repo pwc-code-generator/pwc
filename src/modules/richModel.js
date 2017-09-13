@@ -6,17 +6,14 @@ const
 var richModel = {
     init: function(modelName, parsedModel) {
         try{
+            
             parsedModel.name = modelName;
         
-            this.model = new Model(parsedModel);
-            this.model.buildNames();
-            this.model.buildDescription();
-            this.model.setupFields();
+            let model = new Model(parsedModel);
+            return model;
 
-            this.model.removeUnwantedAttributes();
-
-            return this.model;
         }catch(e){
+            console.log(e.stack);
             throw 'Problem with the model "' + modelName.yellow + '". '.red + e.red;
         }
     }

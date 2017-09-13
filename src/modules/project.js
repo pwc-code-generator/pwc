@@ -10,7 +10,7 @@ var project = {
         this.commands = commands;
         this.loadProjectFile();
         this.filterProject();
-
+        
         return this.project;
     },
 

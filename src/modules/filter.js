@@ -7,7 +7,7 @@ var filter = {
     init: function(commands, parsedProject) {
         this.commands = commands;
         this.parsedProject = parsedProject;
-        this.project = {models: {}};
+        this.project = {models: []};
 
         this.filterName();
         this.initModels();
@@ -27,7 +27,7 @@ var filter = {
         Object.keys(this.parsedProject.models).map((modelName) => {
             let parsedModel = this.parsedProject.models[modelName];
             let model = richModel.init(modelName, parsedModel);
-            console.log(model.fields);
+            this.project.models.push(model);
         });
     },
 

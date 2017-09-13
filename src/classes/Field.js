@@ -1,14 +1,56 @@
 const
     changeCase = require('change-case');
 
+/**
+*
+* Field Class
+*
+* A Field is a object containing the attributes below:
+* - Name - The name of field, used in database and programming cases
+* - Label - The label description of the field, used to generate views
+* - Type - The field type, used to set the correct database type
+* - Validation - An array with validation rules
+* - Element - The visible element that will represent the field Eg: HTML Element
+*
+*/
+
 class Field {
 
     constructor(parsedField) {
-        this.name = parsedField.name;
-        this.label = parsedField.label || changeCase.upperCaseFirst(this.name);
-        this.setTypeAndSize(parsedField.type);
-        this.setValidation(parsedField.validation);
-        this.setElement(parsedField.element);
+        try{
+            this.name = parsedField.name;
+            this.label = parsedField.label || changeCase.upperCaseFirst(this.name);
+            this.setTypeAndSize(parsedField.type);
+            this.setValidation(parsedField.validation);
+            this.setElement(parsedField.element);
+        }catch(e){
+            console.log(e.stack);
+            throw 'Problem with the field object. '.red + e.red;
+        }
+    }
+
+    getName() {
+        return this.name;
+    }
+
+    getLabel() {
+        return this.label;
+    }
+
+    getType() {
+        return this.type;
+    }
+
+    getSize() {
+        return this.size;
+    }
+
+    getValidation() {
+        return this.validation;
+    }
+
+    getElement() {
+        return this.element;
     }
 
     setTypeAndSize(type) {

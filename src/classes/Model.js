@@ -1,6 +1,7 @@
 const
     // Classes
     Field = require('./Field'),
+    Relationship = require('./Relationship'),
 
     // Modules
     pluralize = require('pluralize'),
@@ -9,10 +10,22 @@ const
 class Model {
 
     constructor(parsedModel, pluralizeModule, changeCaseModule) {
-        this.parsedModel = parsedModel;
+        try{
+            this.parsedModel = parsedModel;
 
-        this.onlyModel = this.parsedModel.onlyModel || false;
-        this.fields = [];
+            this.onlyModel = this.parsedModel.onlyModel || false;
+            this.fields = [];
+            this.relationships = [];
+            
+            this.buildNames();
+            this.buildDescription();
+            this.setupFields();
+            this.setupRelationships();
+            this.removeUnwantedAttributes();
+        }catch(e){
+            console.log(e.stack);
+            throw 'Model Error: '.red + e.red;
+        }
     }
 
     removeUnwantedAttributes() {
@@ -21,7 +34,9 @@ class Model {
 
     buildNames() {
         this.name = this.parsedModel.name;
+        this.nameCapitalized = changeCase.upperCaseFirst(this.name);
         this.namePlural = pluralize(this.name);
+        this.namePluralCapitalized = changeCase.upperCaseFirst(this.namePlural);
         this.nameSnakeCase = changeCase.snakeCase(this.name);
         this.namePluralSnakeCase = changeCase.snakeCase(this.namePlural);
     }
@@ -31,7 +46,15 @@ class Model {
     }
 
     getNamePlural() {
-        return this.name || '';
+        return this.namePlural || '';
+    }
+
+    getNameCapitalized() {
+        return this.nameCapitalized || '';
+    }
+
+    getNamePluralCapitalized() {
+        return this.namePluralCapitalized || '';
     }
 
     getNameSnakeCase() {
@@ -109,6 +132,25 @@ class Model {
             let field = new Field(parsedField);
             this.fields.push(field);
         });
+    }
+
+    setupRelationships() {
+        this.buildRelationship('belongsTo', this.parsedModel.belongsTo);
+        this.buildRelationship('belongsToMany', this.parsedModel.belongsToMany);
+        this.buildRelationship('hasOne', this.parsedModel.hasOne);
+        this.buildRelationship('hasMany', this.parsedModel.hasMany);
+    }
+
+    buildRelationship(type, relationship) {
+        if(relationship) {
+            Object.keys(relationship).map((relationshipName) => {
+                let parsedRelationship = relationship[relationshipName];
+                    parsedRelationship.name = relationshipName;
+
+                let newRelationship = new Relationship(type, parsedRelationship);
+                this.relationships.push(newRelationship);
+            });
+        }
     }
 
 }
