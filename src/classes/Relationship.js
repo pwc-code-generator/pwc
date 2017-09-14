@@ -8,9 +8,11 @@ class Relationship {
     constructor(type, parsedRelationship) {
         try{
             this.type = type;
+            this.hasforeignKey = false;
             this.parsedRelationship = parsedRelationship;
 
             this.setNames();
+            this.setForeignKeyName();
             this.setElement();
             this.setValidation();
 
@@ -32,6 +34,13 @@ class Relationship {
 
     getNamePlural() {
         return this.namePlural;
+    }
+
+    setForeignKeyName() {
+        if(this.type == 'belongsTo') {
+            this.hasForeignKey = true;
+            this.foreignKeyName = this.name + '_id';
+        }
     }
 
     setElement() {

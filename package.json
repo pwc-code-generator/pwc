@@ -21,7 +21,10 @@
     "colors": "^1.1.2",
     "command-line-args": "^4.0.7",
     "dot": "^1.1.2",
+    "handlebars": "^4.0.10",
     "js-yaml": "^3.9.1",
-    "pluralize": "^7.0.0"
+    "ncp": "^2.0.0",
+    "pluralize": "^7.0.0",
+    "shelljs": "^0.7.8"
   }
 }
