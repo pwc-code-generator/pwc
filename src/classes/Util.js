@@ -8,6 +8,40 @@ class Util {
         this.shellManager = require('shelljs');
         this.templateManager = require('handlebars');
         this.fileCopyManager = require('ncp');
+
+        this.setupSettings();
+    }
+
+    setupSettings() {
+        this.templateManager.registerHelper({
+            false: function (v1) {
+                return !v1;
+            },
+            equals: function (v1, v2) {
+                return v1 === v2;
+            },
+            not: function (v1, v2) {
+                return v1 !== v2;
+            },
+            less: function (v1, v2) {
+                return v1 < v2;
+            },
+            greater: function (v1, v2) {
+                return v1 > v2;
+            },
+            lessOrEqual: function (v1, v2) {
+                return v1 <= v2;
+            },
+            greaterOrEqual: function (v1, v2) {
+                return v1 >= v2;
+            },
+            and: function (v1, v2) {
+                return v1 && v2;
+            },
+            or: function (v1, v2) {
+                return v1 || v2;
+            }
+        });
     }
 
     testDependency(dependency, message) {
