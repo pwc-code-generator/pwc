@@ -24,8 +24,9 @@ var filter = {
     initModels: function() {
         this.validateProjectHasModels();
 
-        Object.keys(this.parsedProject.models).map((modelName) => {
+        Object.keys(this.parsedProject.models).map((modelName, index) => {
             let parsedModel = this.parsedProject.models[modelName];
+            parsedModel.index = index;
             let model = richModel.init(modelName, parsedModel);
             this.project.models.push(model);
         });

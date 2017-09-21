@@ -17,29 +17,19 @@ class Util {
             false: function (v1) {
                 return !v1;
             },
-            equals: function (v1, v2) {
-                return v1 === v2;
-            },
-            not: function (v1, v2) {
-                return v1 !== v2;
-            },
-            less: function (v1, v2) {
-                return v1 < v2;
-            },
-            greater: function (v1, v2) {
-                return v1 > v2;
-            },
-            lessOrEqual: function (v1, v2) {
-                return v1 <= v2;
-            },
-            greaterOrEqual: function (v1, v2) {
-                return v1 >= v2;
-            },
-            and: function (v1, v2) {
-                return v1 && v2;
-            },
-            or: function (v1, v2) {
-                return v1 || v2;
+
+            equal: function () {
+                let isEqual = false;
+                if(arguments.length < 2)
+                    throw 'The template equal function needs two or more arguments!';
+
+                let firstArgument = arguments[0];
+
+                for (var i = 1; i < arguments.length; i++) {
+                    if(firstArgument == arguments[i]) isEqual = true;
+                }
+
+                return isEqual;
             }
         });
     }

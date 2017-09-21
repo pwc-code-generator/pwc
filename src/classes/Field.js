@@ -20,9 +20,15 @@ class Field {
         try{
             this.name = parsedField.name;
             this.label = parsedField.label || changeCase.upperCaseFirst(this.name);
+            this.value = [];
+            this.valueString = '';
+            this.default = parsedField.default || null;
+
             this.setTypeAndSize(parsedField.type);
+            this.setValue(parsedField.value);
             this.setValidation(parsedField.validation);
             this.setElement(parsedField.element);
+            this.setRequired();
         }catch(e){
             console.log(e.stack);
             throw 'Problem with the field object. '.red + e.red;
@@ -59,6 +65,30 @@ class Field {
         this.size = typeParts[1] || null;
     }
 
+    setValue(value) {
+        let valuesForString = [];
+        if(value) {
+            let values = value.trim().split(',');
+            values.forEach((value, index) => {
+                let valueParts = value.trim().split('|'),
+                    valueObject = {
+                        ìndex: index,
+                        value: valueParts[0],
+                        label: valueParts[1] || changeCase.upperCaseFirst(valueParts[0])
+                    };
+
+                valuesForString.push(valueParts[0]);
+                this.value.push(valueObject);
+            });
+
+            this.valueString = valuesForString.join(',');
+        }
+    }
+
+    getValue() {
+        return this.value;
+    }
+
     setValidation(validation) {
         if(validation) {
             this.validation = validation.trim().split('|');
@@ -68,14 +98,19 @@ class Field {
         }
     }
 
+    setRequired() {
+        this.required = this.isRequired();
+    }
+
     isRequired() {
+        let required = false;
         if(this.validation) {
             this.validation.forEach((rule) => {
-                if(rule == 'required') return true;
+                if(rule == 'required') required = true;
             });
         }
 
-        return false;
+        return required;
     }
 
     setElement(element) {

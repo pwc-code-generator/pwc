@@ -11,9 +11,12 @@ class Model {
 
     constructor(parsedModel, pluralizeModule, changeCaseModule) {
         try{
+
             this.parsedModel = parsedModel;
 
+            this.index = this.parsedModel.index;
             this.onlyModel = this.parsedModel.onlyModel || false;
+            this.relationship = this.parsedModel.isRelationship || false;
             this.fields = [];
             this.relationships = [];
             
@@ -22,14 +25,23 @@ class Model {
             this.setupFields();
             this.setupRelationships();
             this.removeUnwantedAttributes();
+
         }catch(e){
             console.log(e.stack);
             throw 'Model Error: '.red + e.red;
         }
     }
 
-    removeUnwantedAttributes() {
-        delete this.parsedModel;
+    getIndex() {
+        return this.index;
+    }
+
+    isOnlyModel() {
+        return this.onlyModel;
+    }
+
+    isRelationship() {
+        return this.relationship;
     }
 
     buildNames() {
@@ -151,6 +163,10 @@ class Model {
                 this.relationships.push(newRelationship);
             });
         }
+    }
+
+    removeUnwantedAttributes() {
+        delete this.parsedModel;
     }
 
 }
