@@ -18,7 +18,15 @@ class Util {
                 return !v1;
             },
 
-            equal: function () {
+            equal: function(v1, v2) {
+                return v1 == v2;
+            },
+            
+            /**
+             * Returns if the first argument matches the other arguments list
+             * @return boolean
+             */
+            in: function () {
                 let isEqual = false;
                 if(arguments.length < 2)
                     throw 'The template equal function needs two or more arguments!';

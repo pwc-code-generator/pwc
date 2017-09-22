@@ -18,21 +18,28 @@ class Field {
 
     constructor(parsedField) {
         try{
-            this.name = parsedField.name;
-            this.label = parsedField.label || changeCase.upperCaseFirst(this.name);
-            this.value = [];
-            this.valueString = '';
-            this.default = parsedField.default || null;
-
+            
+            this.initAttributes(parsedField);
             this.setTypeAndSize(parsedField.type);
             this.setValue(parsedField.value);
+            this.setItems(parsedField.items);
             this.setValidation(parsedField.validation);
             this.setElement(parsedField.element);
             this.setRequired();
+
         }catch(e){
             console.log(e.stack);
             throw 'Problem with the field object. '.red + e.red;
         }
+    }
+
+    initAttributes(parsedField) {
+        this.name = parsedField.name;
+        this.label = parsedField.label || changeCase.upperCaseFirst(this.name);
+        this.value = null;
+        this.items = [];
+        this.valueString = '';
+        this.default = parsedField.default || null;
     }
 
     getName() {
@@ -65,24 +72,33 @@ class Field {
         this.size = typeParts[1] || null;
     }
 
-    setValue(value) {
-        let valuesForString = [];
-        if(value) {
-            let values = value.trim().split(',');
-            values.forEach((value, index) => {
-                let valueParts = value.trim().split('|'),
-                    valueObject = {
+    setItems(items) {
+        let itemsForString = [];
+        if(items) {
+            let itemsValues = items.trim().split(',');
+            itemsValues.forEach((item, index) => {
+                let itemParts = item.trim().split('|'),
+                    itemObject = {
                         ìndex: index,
-                        value: valueParts[0],
-                        label: valueParts[1] || changeCase.upperCaseFirst(valueParts[0])
+                        value: itemParts[0],
+                        label: itemParts[1] || changeCase.upperCaseFirst(itemParts[0])
                     };
 
-                valuesForString.push(valueParts[0]);
-                this.value.push(valueObject);
+                itemsForString.push(itemParts[0]);
+                this.items.push(itemObject);
             });
 
-            this.valueString = valuesForString.join(',');
+            this.itemsString = itemsForString.join(',');
         }
+    }
+
+    getItems() {
+        return this.items;
+    }
+
+    setValue(value) {
+        if(value)
+            this.value = value;
     }
 
     getValue() {
