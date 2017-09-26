@@ -40,6 +40,7 @@ class Field {
         this.items = [];
         this.valueString = '';
         this.default = parsedField.default || null;
+        this.inList = (parsedField.inList !== undefined) ? parsedField.inList : true;
     }
 
     getName() {
@@ -64,6 +65,10 @@ class Field {
 
     getElement() {
         return this.element;
+    }
+
+    getInList() {
+        return this.inList;
     }
 
     setTypeAndSize(type) {
