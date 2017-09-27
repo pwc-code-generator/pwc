@@ -8,6 +8,7 @@ const
 var project = {
     init: function(commands) {
         this.commands = commands;
+        this.models = [];
         this.loadProjectFile();
         this.filterProject();
         

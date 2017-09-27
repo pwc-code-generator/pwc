@@ -81,6 +81,16 @@ class Relationship {
         delete this.parsedRelationship;
     }
 
+    setRelatedModel(model) {
+        if(!model)
+            throw 'Trying to add a related model in the relationship ' + this.type + ':' + this.name + ' but the model doesn\'t exists';
+        this.relatedModel = model;
+    }
+
+    getRelatedModel() {
+        return this.relatedModel;
+    }
+
 }
 
 module.exports = Relationship;

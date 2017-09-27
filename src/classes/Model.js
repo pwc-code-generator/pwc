@@ -9,17 +9,11 @@ const
 
 class Model {
 
-    constructor(parsedModel, pluralizeModule, changeCaseModule) {
+    constructor(parsedModel) {
+
         try{
 
-            this.parsedModel = parsedModel;
-
-            this.index = this.parsedModel.index;
-            this.onlyModel = this.parsedModel.onlyModel || false;
-            this.relationship = this.parsedModel.isRelationship || false;
-            this.fields = [];
-            this.relationships = [];
-            
+            this.initAttributes(parsedModel);
             this.buildNames();
             this.buildDescription();
             this.setupFields();
@@ -28,8 +22,19 @@ class Model {
 
         }catch(e){
             console.log(e.stack);
-            throw 'Model Error: '.red + e.red;
+            throw 'Problem with the model "' + parsedModel.name.yellow + '". '.red + e.red;
         }
+
+    }
+
+    initAttributes(parsedModel) {
+        this.parsedModel = parsedModel;
+
+        this.index = this.parsedModel.index;
+        this.onlyModel = this.parsedModel.onlyModel || false;
+        this.relationship = this.parsedModel.isRelationship || false;
+        this.fields = [];
+        this.relationships = [];
     }
 
     getIndex() {

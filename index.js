@@ -7,7 +7,7 @@ const
     // Modules
     colors = require('colors'),
     commands = require('./src/modules/commands'),
-    project = require('./src/modules/project');
+    projectParser = require('./src/modules/projectParser');
 
 module.exports = {
     init: function() {
@@ -21,7 +21,7 @@ module.exports = {
 
             if(commands.getGenerator() == 'project') {
 
-                let parsedProject = project.init(commands);
+                let parsedProject = projectParser.init(commands);
                 plugStarter.initProject(parsedProject);
 
             } else if(commands.getGenerator() == 'model') {

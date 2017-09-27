@@ -29,7 +29,7 @@ class Field {
 
         }catch(e){
             console.log(e.stack);
-            throw 'Problem with the field object. '.red + e.red;
+            throw 'Problem with the field object. '.red + parsedField.name + ' ' + e.red;
         }
     }
 
