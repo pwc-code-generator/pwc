@@ -35,6 +35,10 @@ class Model {
         this.relationship = this.parsedModel.isRelationship || false;
         this.fields = [];
         this.relationships = [];
+        this.belongsToRelationships = [];
+        this.belongsToManyRelationships = [];
+        this.hasOneRelationships = [];
+        this.hasManyRelationships = [];
     }
 
     getIndex() {
@@ -152,13 +156,13 @@ class Model {
     }
 
     setupRelationships() {
-        this.buildRelationship('belongsTo', this.parsedModel.belongsTo);
-        this.buildRelationship('belongsToMany', this.parsedModel.belongsToMany);
-        this.buildRelationship('hasOne', this.parsedModel.hasOne);
-        this.buildRelationship('hasMany', this.parsedModel.hasMany);
+        this.buildBelongsToRelationship(this.parsedModel.belongsTo);
+        this.buildBelongsToManyRelationship(this.parsedModel.belongsToMany);
+        this.buildHasOneRelationship(this.parsedModel.hasOne);
+        this.buildHasManyRelationship(this.parsedModel.hasMany);
     }
 
-    buildRelationship(type, relationship) {
+    buildRelationship(type, relationship, callback) {
         if(relationship) {
             Object.keys(relationship).map((relationshipName) => {
                 let parsedRelationship = relationship[relationshipName];
@@ -166,8 +170,33 @@ class Model {
 
                 let newRelationship = new Relationship(type, parsedRelationship);
                 this.relationships.push(newRelationship);
+                if(callback) callback(newRelationship);
             });
         }
+    }
+
+    buildBelongsToRelationship(relationship) {
+        this.buildRelationship('belongsTo', this.parsedModel.belongsTo, (relationship) => {
+            this.belongsToRelationships.push(relationship);
+        });
+    }
+
+    buildBelongsToManyRelationship(relationship) {
+        this.buildRelationship('belongsToMany', this.parsedModel.belongsToMany, (relationship) => {
+            this.belongsToManyRelationships.push(relationship);
+        });
+    }
+
+    buildHasOneRelationship(relationship) {
+        this.buildRelationship('hasOne', this.parsedModel.hasOne, (relationship) => {
+            this.hasOneRelationships.push(relationship);
+        });
+    }
+
+    buildHasManyRelationship(relationship) {
+        this.buildRelationship('hasMany', this.parsedModel.hasMany, (relationship) => {
+            this.hasManyRelationships.push(relationship);
+        });
     }
 
     removeUnwantedAttributes() {

@@ -39,9 +39,9 @@ class Project {
         let foundModel = null;
 
         this.models.forEach((model) => {
-            console.log(model.name, name);
-            if(model.name == name)
+            if(model.name == name) {
                 foundModel = model;
+            }
         });
 
         return foundModel;

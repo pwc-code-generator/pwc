@@ -14,12 +14,21 @@ class Util {
 
     setupSettings() {
         this.templateManager.registerHelper({
-            false: function (v1) {
-                return !v1;
-            },
 
             equal: function(v1, v2) {
                 return v1 == v2;
+            },
+
+            lengthEqual: function(array, length) {
+                return array.length == length;
+            },
+
+            lengthLessThan: function(array, length) {
+                return array.length < length;
+            },
+
+            lengthGreaterThan: function(array, length) {
+                return array.length > length;
             },
             
             /**

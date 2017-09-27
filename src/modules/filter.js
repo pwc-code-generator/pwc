@@ -49,7 +49,7 @@ var filter = {
     },
 
     enrichRelationships: function() {
-        this.project.models.forEach((model) => {
+        this.project.getModels().forEach((model) => {
             model.relationships.forEach((relationship) => {
                 let relatedModel = this.project.getModelByName(relationship.name);
                 relationship.setRelatedModel(relatedModel);

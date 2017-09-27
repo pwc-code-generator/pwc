@@ -6,21 +6,28 @@ const
 class Relationship {
 
     constructor(type, parsedRelationship) {
+        
         try{
-            this.type = type;
-            this.hasforeignKey = false;
-            this.parsedRelationship = parsedRelationship;
 
+            this.initAttributes(type, parsedRelationship);
             this.setNames();
             this.setForeignKeyName();
             this.setElement();
             this.setValidation();
+            this.setRequired();
 
             this.removeUnwantedAttributes();
         }catch(e){
             console.log(e.stack);
             throw 'Problem with the relationship "' + type + '". '.red + e.red;
         }
+        
+    }
+
+    initAttributes(type, parsedRelationship) {
+        this.type = type;
+        this.hasforeignKey = false;
+        this.parsedRelationship = parsedRelationship;
     }
 
     setNames() {
@@ -64,6 +71,21 @@ class Relationship {
 
     getValidation() {
         return this.validation;
+    }
+
+    setRequired() {
+        this.required = this.isRequired();
+    }
+
+    isRequired() {
+        let required = false;
+        if(this.validation) {
+            this.validation.forEach((rule) => {
+                if(rule == 'required') required = true;
+            });
+        }
+
+        return required;
     }
 
     getDefaultElement() {
