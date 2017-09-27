@@ -77,6 +77,17 @@ class Util {
         return this.writeFile(destFilePath, content);
     }
 
+    /**
+     * Makes a folder based on a folder template (copy the folder)
+     * @param  string destinationFolder
+     * @param  string templateFolder
+     * @return boolean
+     */
+    makeFolderFromTemplate(destinationFolder, templateFolder) {
+        console.log('Creating Directory inside: '.blue.bold + destinationFolder);
+        return this.shellManager.cp('-R', templateFolder, destinationFolder);
+    }
+
     writeFile(destFilePath, content) {
         console.log('Writing File: '.green.bold + destFilePath);
         this.makeDirectoryIfNotExists(destFilePath);

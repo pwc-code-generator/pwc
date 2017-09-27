@@ -39,7 +39,8 @@ class Field {
         this.value = null;
         this.items = [];
         this.valueString = '';
-        this.default = parsedField.default || null;
+        this.default = (parsedField.default !== undefined) ? parsedField.default : null;
+        this.hasDefault = (parsedField.default !== undefined) ? true : false;
         this.inList = (parsedField.inList !== undefined) ? parsedField.inList : true;
     }
 
@@ -65,6 +66,14 @@ class Field {
 
     getElement() {
         return this.element;
+    }
+
+    getDefault() {
+        return this.default;
+    }
+
+    hasDefault() {
+        return this.hasDefault;
     }
 
     getInList() {
