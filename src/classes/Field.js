@@ -24,6 +24,8 @@ class Field {
             this.setValue(parsedField.value);
             this.setItems(parsedField.items);
             this.setValidation(parsedField.validation);
+            this.addValidationRules();
+            this.setMimeTypes(parsedField.mimeTypes);
             this.setElement(parsedField.element);
             this.setRequired();
 
@@ -39,9 +41,13 @@ class Field {
         this.value = null;
         this.items = [];
         this.valueString = '';
+        this.validationString = '';
+        this.searchable = (parsedField.searchable !== undefined) ? parsedField.searchable : false;
         this.default = (parsedField.default !== undefined) ? parsedField.default : null;
         this.hasDefault = (parsedField.default !== undefined) ? true : false;
         this.inList = (parsedField.inList !== undefined) ? parsedField.inList : true;
+        this.isFileField = false;
+        this.isImageField = false;
     }
 
     getName() {
@@ -80,10 +86,20 @@ class Field {
         return this.inList;
     }
 
+    isSearchable() {
+        return this.searchable;
+    }
+
     setTypeAndSize(type) {
         let typeParts = type.trim().split(',');
         this.type = typeParts[0];
         this.size = typeParts[1] || null;
+        this.setIsFileOrImageField();
+    }
+
+    setIsFileOrImageField() {
+        this.isFileField = (this.type == 'file' || this.type == 'image');
+        this.isImageField = (this.type == 'image');
     }
 
     setItems(items) {
@@ -119,12 +135,39 @@ class Field {
         return this.value;
     }
 
+    addValidationRules() {
+        if(this.isImageField) {
+            this.addValitationRule('image');
+        }
+
+        if(this.isFileField) {
+            this.addValitationRule('file');
+        }
+    }
+
+    addValitationRule(rule) {
+        let validation = this.validationString ? this.validationString.trim().split('|') : [];
+        validation.push(rule);
+        validation = validation.join('|');
+        this.setValidation(validation);
+    }
+
     setValidation(validation) {
         if(validation) {
             this.validation = validation.trim().split('|');
             this.validationString = validation;
         } else {
             this.validation = null;
+        }
+    }
+
+    setMimeTypes(mimeTypes) {
+        if(mimeTypes) {
+            this.mimeTypes = mimeTypes.trim().split(',');
+            this.mimeTypesString = mimeTypes;
+            this.addValitationRule('mimetypes:' + this.mimeTypesString);
+        } else {
+            this.mimeTypes = null;
         }
     }
 
