@@ -1,7 +1,8 @@
 'use strict';
 
 const
-    pluralize = require('pluralize');
+    pluralize = require('pluralize'),
+    changeCase = require('change-case');
 
 class Relationship {
 
@@ -32,7 +33,13 @@ class Relationship {
 
     setNames() {
         this.name = this.parsedRelationship.name;
+        this.nameCapitalized = changeCase.upperCaseFirst(this.name);
         this.namePlural = pluralize(this.name);
+        this.namePluralCapitalized = changeCase.upperCaseFirst(this.namePlural);
+        this.nameSnakeCase = changeCase.snakeCase(this.name);
+        this.namePluralSnakeCase = changeCase.snakeCase(this.namePlural);
+        this.alias = this.parsedRelationship.alias || this.name;
+        this.aliasPlural = (this.parsedRelationship.alias) ? pluralize(this.parsedRelationship.alias) : this.namePlural;
     }
 
     getName() {
@@ -41,6 +48,30 @@ class Relationship {
 
     getNamePlural() {
         return this.namePlural;
+    }
+
+    getNameCapitalized() {
+        return this.nameCapitalized || '';
+    }
+
+    getNamePluralCapitalized() {
+        return this.namePluralCapitalized || '';
+    }
+
+    getNameSnakeCase() {
+        return this.nameSnakeCase || '';
+    }
+
+    getNamePluralSnakeCase() {
+        return this.namePluralSnakeCase || '';
+    }
+
+    getAlias() {
+        return this.alias;
+    }
+
+    getAliasPlural() {
+        return this.aliasPlural;
     }
 
     setForeignKeyName() {
@@ -53,7 +84,7 @@ class Relationship {
     }
 
     setElement() {
-        this.element = this.parsedRelationship.element || this.getDefaultElement();
+        this.element = (this.parsedRelationship.element !== undefined) ? this.parsedRelationship.element : this.getDefaultElement();
     }
 
     getElement() {
@@ -93,9 +124,9 @@ class Relationship {
     getDefaultElement() {
         let elementsByType = {
             'belongsTo': 'select',
-            'belongsToMany': 'master-detail',
+            'belongsToMany': 'master-datagrid',
             'hasOne': 'simple-add',
-            'hasMany': 'simple-detail',
+            'hasMany': 'simple-datagrid',
         };
 
         return elementsByType[this.type];
