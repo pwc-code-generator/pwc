@@ -34,6 +34,7 @@ class Model {
         this.onlyModel = this.parsedModel.onlyModel || false;
         this.relationship = this.parsedModel.isRelationship || false;
         this.fields = [];
+        this.fieldsCount = 0;
         this.relationships = [];
         this.belongsToRelationships = [];
         this.belongsToManyRelationships = [];
@@ -60,6 +61,8 @@ class Model {
         this.namePluralCapitalized = changeCase.upperCaseFirst(this.namePlural);
         this.nameSnakeCase = changeCase.snakeCase(this.name);
         this.namePluralSnakeCase = changeCase.snakeCase(this.namePlural);
+        this.nameSlugCase = changeCase.paramCase(this.name);
+        this.namePluralSlugCase = changeCase.paramCase(this.namePlural);
     }
 
     getName() {
@@ -84,6 +87,14 @@ class Model {
 
     getNamePluralSnakeCase() {
         return this.namePluralSnakeCase || '';
+    }
+
+    getNameSlugCase() {
+        return this.nameSlugCase || '';
+    }
+
+    getNamePluralSlugCase() {
+        return this.namePluralSlugCase || '';
     }
 
     buildDescription() {
@@ -153,6 +164,8 @@ class Model {
             let field = new Field(parsedField);
             this.fields.push(field);
         });
+
+        this.fieldsCount = this.fields.length;
     }
 
     setupRelationships() {

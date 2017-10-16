@@ -38,6 +38,8 @@ class Relationship {
         this.namePluralCapitalized = changeCase.upperCaseFirst(this.namePlural);
         this.nameSnakeCase = changeCase.snakeCase(this.name);
         this.namePluralSnakeCase = changeCase.snakeCase(this.namePlural);
+        this.nameSlugCase = changeCase.paramCase(this.name);
+        this.namePluralSlugCase = changeCase.paramCase(this.namePlural);
         this.alias = this.parsedRelationship.alias || this.name;
         this.aliasPlural = (this.parsedRelationship.alias) ? pluralize(this.parsedRelationship.alias) : this.namePlural;
     }
@@ -64,6 +66,14 @@ class Relationship {
 
     getNamePluralSnakeCase() {
         return this.namePluralSnakeCase || '';
+    }
+
+    getNameSlugCase() {
+        return this.nameSlugCase || '';
+    }
+
+    getNamePluralSlugCase() {
+        return this.namePluralSlugCase || '';
     }
 
     getAlias() {

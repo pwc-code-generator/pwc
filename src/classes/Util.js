@@ -1,5 +1,8 @@
 'use strict';
 
+const
+    handlebarsHelpers = require('handlebars-helpers')();
+
 class Util {
 
     constructor() {
@@ -13,7 +16,8 @@ class Util {
     }
 
     setupSettings() {
-        this.templateManager.registerHelper({
+        
+        let customHelpers = {
 
             equal: function(v1, v2) {
                 return v1 == v2;
@@ -48,7 +52,10 @@ class Util {
 
                 return isEqual;
             }
-        });
+        };
+
+        // Register all the Handlebars Helpers (Custom)
+        this.templateManager.registerHelper(Object.assign(customHelpers, handlebarsHelpers));
     }
 
     testDependency(dependency, message) {
@@ -110,6 +117,22 @@ class Util {
         }
         this.makeDirectoryIfNotExists(directoryName);
         this.fileManager.mkdirSync(directoryName);
+    }
+
+    /**
+     * Get a existent file passing the content to the callback to manipulate it
+     * @param  {string}   fileNamePath File that will be manipulated
+     * @param  {Function} callback     The callback that you receive the code and can manipulate it
+     * @return {boolean}    Returns if the file was saved
+     */
+    manipulateFile(fileNamePath, callback) {
+        let fileContent = this.fileManager.readFileSync(fileNamePath, 'utf8');
+
+        if(callback) {
+            fileContent = callback(fileContent);
+        }
+        
+        return this.writeFile(fileName, fileContent);
     }
 
 }
