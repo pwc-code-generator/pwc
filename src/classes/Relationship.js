@@ -85,7 +85,7 @@ class Relationship {
     }
 
     setForeignKeyName() {
-        if(this.type == 'belongsTo') {
+        if(this.type == 'belongsTo' || this.type == 'hasOne' || this.type == 'hasMany') {
             this.hasForeignKey = true;
             this.defaultForeignKeyName = this.name + '_id';
             this.foreignKeyName = this.parsedRelationship.foreignKeyName ? this.parsedRelationship.foreignKeyName : this.defaultForeignKeyName;

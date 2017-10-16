@@ -1,7 +1,7 @@
 'use strict';
 
 const
-    handlebarsHelpers = require('handlebars-helpers')();
+    handlebarsMathHelpers = require('handlebars-helpers').math();
 
 class Util {
 
@@ -55,7 +55,7 @@ class Util {
         };
 
         // Register all the Handlebars Helpers (Custom)
-        this.templateManager.registerHelper(Object.assign(customHelpers, handlebarsHelpers));
+        this.templateManager.registerHelper(Object.assign(customHelpers, handlebarsMathHelpers));
     }
 
     testDependency(dependency, message) {
