@@ -12,6 +12,7 @@ class Relationship {
 
             this.initAttributes(type, parsedRelationship);
             this.setNames();
+            this.setDisplayField();
             this.setForeignKeyName();
             this.setElement();
             this.setValidation();
@@ -82,6 +83,14 @@ class Relationship {
 
     getAliasPlural() {
         return this.aliasPlural;
+    }
+
+    setDisplayField() {
+        this.displayField = this.parsedRelationship.displayField || 'name';
+    }
+
+    getDisplayField() {
+        return this.displayField;
     }
 
     setForeignKeyName() {
