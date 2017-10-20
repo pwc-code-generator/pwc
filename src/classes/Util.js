@@ -69,10 +69,6 @@ class Util {
         this.shellManager.exec(command, callback);
     }
 
-    goToProjectFolder(project) {
-        this.goToFolder(project.name);
-    }
-
     goToFolder(folder) {
         this.shellManager.cd(folder);
     }

@@ -1,5 +1,9 @@
 'use strict';
 
+const
+    // Classes
+    Util = require('./Util');
+
 class Project {
 
     constructor() {
@@ -13,6 +17,7 @@ class Project {
 
     initAttributes() {
         this.models = [];
+        this.utils = new Util();
     }
 
     setName(name) {
@@ -45,6 +50,37 @@ class Project {
         });
 
         return foundModel;
+    }
+
+    createGenerationFile() {
+        let generation = {
+            generated: false,
+            files: []
+        };
+
+        if(!this.utils.fileManager.existsSync(this.name + '.json')) {
+            this.writeGenerationFile(generation);
+        }
+    }
+
+    finalizeGenerationFile() {
+        let generation = this.getGenerationFileContent();
+        generation.generated = true;
+        this.writeGenerationFile(generation);
+    }
+
+    getGenerationFileContent() {
+        return JSON.parse(this.utils.fileManager.readFileSync(this.name + '.json', 'utf8'));
+    }
+
+    writeGenerationFile(generationContent) {
+        let content = JSON.stringify(generationContent);
+        return this.utils.writeFile(this.name + '.json', content);
+    }
+
+    isFirstGeneration() {
+        let generation = this.getGenerationFileContent();
+        return !generation.generated;
     }
 
 }

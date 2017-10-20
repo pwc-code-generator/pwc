@@ -1,0 +1,42 @@
+models:
+  product:
+    description: Produto|Produtos, o|os
+    fields: --name name --type string,128 --validation required --element text, 
+            --name image --type file --element file-image
+    # Por padrão o belongsTo gera um elemento select, em um model onde onlyModel = false
+    belongsTo: brand:required:element(select)
+  brand:
+    fields: name:string(128):required:label(Nome)
+    hasMany: product, brandPhone:element(simple-detail)
+  brandPhone:
+    onlyModel: true
+    fields: phone:string(32):required
+    belongsTo: brand:required
+  student:
+    fields: name:string:required
+    belongsToMany: person:element(none)
+  person:
+    fields: name:string:required
+    # Vai pesquisar pela existência do model person_student. Caso não encontre, irá gerar o
+    # model relacionando person e student
+    belongsToMany: student:element(simple-detail)
+
+  # Nesse caso o model person_student foi necessário pois ele possui um campo extra, o active, que
+  # será representado por um checkbox no detalhamento. Se esse campo não fosse necessário,
+  # o model poderia ser suprimido e gerado automaticamente
+  personStudent:
+    fields: active:boolean:required:default(true):element(checkbox)
+    onlyModel: true
+    belongsTo: person:required, student:required  
+  order:
+    fields: date:date:required, description:text
+    belongsTo: person:required:element(select)
+    hasMany: orderItem:element(master-detail)
+  orderItem:
+    onlyModel: true
+    # Utilizamos element(none) para não gerar o total no mestre-detalhe
+    fields: quantity:integer:required:min(0), total:double:required:element(none)
+
+    # Se o Model é onlyModel = true, qualquer relacionamento belongsTo recebe um valor
+    # implícito do mestre (master-detail), a não ser que seja especificado um elemento
+    belongsTo: order:required, product:required:element(select)

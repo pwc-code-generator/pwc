@@ -1,0 +1,162 @@
+name: Teste2
+models:
+  brand:
+    description: Marca|Marcas, a|as
+    fields:
+      name:
+        label: Nome
+        type: string,128
+        validation: required
+        searchable: true
+      email:
+        label: E-mail
+        type: string,128
+        element: email
+        validation: required|email
+    hasMany:
+      product:
+        element: false
+      brandPhone:
+        alias: phone
+        element: simple-datagrid
+        foreignKeyName: owner_id # Só quando for nome diferente, funciona para hasOne, hasMany e belongsTo
+
+  product:
+    description: Produto|Produtos, o|os
+    fields:
+      name:
+        label: Nome
+        type: string,128
+        element: text
+        validation: required
+        searchable: true
+      type:
+        label: Tipo
+        type: enum
+        items: physical|Físico,digital,undefined|Indefinido
+        default: physical
+        validation: required
+    belongsTo:
+      brand:
+        element: select
+        validation: required
+    hasMany:
+      grid:
+        element: simple-datagrid
+
+  client:
+    description: Cliente|Clientes, o|os
+    fields:
+      name:
+        label: Nome
+        type: string,128
+        element: text
+        validation: required
+        searchable: true
+    hasMany:
+      order:
+        element: false
+
+  order:
+    description: Pedido|Pedidos, o|os
+    fields:
+      name:
+        label: Data de Abertura
+        type: date
+        validation: required|date
+        searchable: true
+      status:
+        label: Status
+        type: enum
+        items: opened|Aberto,closed|Fechado
+        default: opened
+        validation: required
+    belongsTo:
+      client:
+        validation: required
+    hasMany:
+      orderItem:
+        alias: item
+        element: simple-datagrid
+
+  brandPhone:
+    description: Telefone|Telefones, o|os
+    onlyModel: true
+    isRelationship: true
+    fields:
+      phone:
+        label: Telefone
+        type: string,32
+        validation: required|min:5
+      company:
+        label: Operadora
+        type: enum
+        items: oi,vivo,tim,claro,nextel
+        default: oi
+        validation: required
+    belongsTo: 
+      brand:
+        foreignKeyName: owner_id
+        element: false
+        validation: required
+
+  grid:
+    description: Grade de Produto|Grades de Produto, o|os
+    onlyModel: true
+    isRelationship: true
+    fields:
+      description:
+        label: Descrição
+        type: string,128
+        validation: required|max:128
+      barcode:
+        label: Cód. Barras
+        type: string,128
+        validation: required|max:128
+      measure:
+        label: Un. Medida
+        type: enum
+        items: unity|Unidade, meters|Metro
+        default: unity
+        validation: required
+      size:
+        label: Tamanho
+        type: string,128
+        validation: required|max:128
+      color:
+        label: Cor
+        type: string,128
+        validation: required|max:128
+      price:
+        label: Preço
+        type: decimal
+        validation: required
+    belongsTo: 
+      product:
+        element: false
+        validation: required
+
+  orderItem:
+    description: Item do Pedido|Itens do Pedido, o|os
+    onlyModel: true
+    isRelationship: true
+    fields:
+      quantity:
+        label: Quantidade
+        type: decimal
+        validation: required
+      discount:
+        label: Desconto
+        type: decimal
+        validation: required
+      rate:
+        label: Acréscimos
+        type: decimal
+        validation: required
+    belongsTo: 
+      order:
+        element: false
+        validation: required
+      grid:
+        displayField: description # Especifica qual campo será mostrado no combobox de seleção
+        validation: required
