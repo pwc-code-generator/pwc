@@ -66,6 +66,7 @@ class Util {
     }
 
     executeCommand(command, callback) {
+        console.log('Running "' + command.yellow + '"');
         this.shellManager.exec(command, callback);
     }
 

@@ -44,7 +44,7 @@ var filter = {
 
     validateParsedProjectHasModels: function() {
         if(!this.parsedProject.models || this.parsedProject.models.length == 0)
-            throw 'The project has no models to generate de code. Please verify your ' 
+            throw 'The project has no models to generate the code. Please verify your ' 
             + this.commands.getFile() + ' file';
     },
 
@@ -56,6 +56,14 @@ var filter = {
             });
         });
     },
+
+    /**
+     * This method is used to order the models based in your relationships. Eg: With a model "PARENT" and a model "CHILD",
+     * the "PARENT" model needs to always run before the "CHILD" model. Otherwise, the database generation can broken.
+     */
+    orderModels: function() {
+
+    }
 
 };
 
