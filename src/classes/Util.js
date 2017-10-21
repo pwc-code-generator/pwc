@@ -100,10 +100,20 @@ class Util {
         return this.shellManager.cp('-R', templateFolder, destinationFolder);
     }
 
-    writeFile(destFilePath, content) {
-        console.log('Writing File: '.green.bold + destFilePath);
+    writeFile(destFilePath, content, message) {
+        let customMessage = message || 'Writing File: ';
+        console.log(customMessage.green.bold + destFilePath);
         this.makeDirectoryIfNotExists(destFilePath);
         return this.fileManager.writeFileSync(destFilePath, content);
+    }
+
+    deleteFile(destFilePath) {
+        if(this.fileManager.existsSync(destFilePath)) {
+            console.log('Removing File: '.yellow.bold + destFilePath);
+            return this.fileManager.unlink(destFilePath);
+        }
+
+        return false;
     }
 
     makeDirectoryIfNotExists(filePath) {

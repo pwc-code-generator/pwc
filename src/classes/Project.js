@@ -55,10 +55,10 @@ class Project {
     createGenerationFile() {
         let generation = {
             generated: false,
-            files: []
+            files: [],
         };
 
-        if(!this.utils.fileManager.existsSync(this.name + '.json')) {
+        if(!this.utils.fileManager.existsSync('pwc-gen.json')) {
             this.writeGenerationFile(generation);
         }
     }
@@ -69,13 +69,37 @@ class Project {
         this.writeGenerationFile(generation);
     }
 
+    resetRegisteredFiles() {
+        let generation = this.getGenerationFileContent();
+        generation.files = [];
+        this.writeGenerationFile(generation);
+    }
+
+    registerFileGeneration(file) {
+        let generation = this.getGenerationFileContent();
+        generation.files.push(file);
+        this.writeGenerationFile(generation);
+    }
+
+    deleteRegisteredFiles() {
+        let generation = this.getGenerationFileContent();
+        
+        generation.files.forEach((file, index) => {
+            this.utils.deleteFile(file);
+        });
+
+        generation.files = [];
+
+        this.writeGenerationFile(generation);
+    }
+
     getGenerationFileContent() {
-        return JSON.parse(this.utils.fileManager.readFileSync(this.name + '.json', 'utf8'));
+        return JSON.parse(this.utils.fileManager.readFileSync('pwc-gen.json', 'utf8'));
     }
 
     writeGenerationFile(generationContent) {
-        let content = JSON.stringify(generationContent);
-        return this.utils.writeFile(this.name + '.json', content);
+        let content = JSON.stringify(generationContent, null, 4);
+        return this.utils.writeFile('pwc-gen.json', content, 'Registering generation info inside: ');
     }
 
     isFirstGeneration() {
