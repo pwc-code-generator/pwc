@@ -157,15 +157,19 @@ class Model {
 
     setupFields() {
         let fields = this.parsedModel.fields;
-        Object.keys(fields).map((fieldName) => {
-            let parsedField = fields[fieldName];
-                parsedField.name = fieldName;
+        this.fieldsCount = 0;
 
-            let field = new Field(parsedField);
-            this.fields.push(field);
-        });
+        if(fields) {
+            Object.keys(fields).map((fieldName) => {
+                let parsedField = fields[fieldName];
+                    parsedField.name = fieldName;
 
-        this.fieldsCount = this.fields.length;
+                let field = new Field(parsedField);
+                this.fields.push(field);
+            });
+
+            this.fieldsCount = this.fields.length;
+        }
     }
 
     setupRelationships() {
