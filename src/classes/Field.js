@@ -198,6 +198,8 @@ class Field {
             'decimal': 'number',
             'boolean': 'checkbox',
             'date': 'date',
+            'datetime': 'date',
+            'time': 'text',
             'enum': 'select',
             'file': 'file',
             'image': 'file',
