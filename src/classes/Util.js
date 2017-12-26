@@ -82,6 +82,7 @@ class Util {
     getContentFromTemplate(fileName, variables = {}) {
         let fileContent = this.fileManager.readFileSync(fileName, 'utf8');
         var template = this.templateManager.compile(fileContent);
+        variables.preventIdent = true;
         return template(variables);
     }
 

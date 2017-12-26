@@ -199,6 +199,7 @@ class Field {
             'boolean': 'checkbox',
             'date': 'date',
             'datetime': 'date',
+            'timestamp': 'date',
             'time': 'text',
             'enum': 'select',
             'file': 'file',

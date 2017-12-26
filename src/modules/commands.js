@@ -10,10 +10,10 @@ const optionsDefinitions = [
 ];
 
 const optionsValidation = {
-    'generate': 'required',
-    'name': '',
-    'file': 'required',
-    'plug': 'required'
+    'generate': 'required', // Generate project or model
+    'name': '', // Project Name
+    'file': 'required', // Project File
+    'plug': 'required' // Plug
 };
 
 var commands = {
