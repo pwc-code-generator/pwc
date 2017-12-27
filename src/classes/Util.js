@@ -1,7 +1,8 @@
 'use strict';
 
 const
-    handlebarsMathHelpers = require('handlebars-helpers').math();
+    // Classes
+    Template = require('./Template');
 
 class Util {
 
@@ -9,53 +10,7 @@ class Util {
         this.pathManager = require('path');
         this.fileManager = require('fs');
         this.shellManager = require('shelljs');
-        this.templateManager = require('handlebars');
         this.fileCopyManager = require('ncp');
-
-        this.setupSettings();
-    }
-
-    setupSettings() {
-        
-        let customHelpers = {
-
-            equal: function(v1, v2) {
-                return v1 == v2;
-            },
-
-            lengthEqual: function(array, length) {
-                return array.length == length;
-            },
-
-            lengthLessThan: function(array, length) {
-                return array.length < length;
-            },
-
-            lengthGreaterThan: function(array, length) {
-                return array.length > length;
-            },
-            
-            /**
-             * Returns if the first argument matches the other arguments list
-             * @return boolean
-             */
-            in: function () {
-                let isEqual = false;
-                if(arguments.length < 2)
-                    throw 'The template equal function needs two or more arguments!';
-
-                let firstArgument = arguments[0];
-
-                for (var i = 1; i < arguments.length; i++) {
-                    if(firstArgument == arguments[i]) isEqual = true;
-                }
-
-                return isEqual;
-            }
-        };
-
-        // Register all the Handlebars Helpers (Custom)
-        this.templateManager.registerHelper(Object.assign(customHelpers, handlebarsMathHelpers));
     }
 
     testDependency(dependency, message) {
@@ -75,19 +30,18 @@ class Util {
     }
 
     /**
-    * Get a file, proccess it with variables and return the content
+    * Get a file, proccess it with data and return the content
     * - fileName - The file name and path in case of external file
-    * - variables - The variables that the doT engine will proccess
+    * - data - The data that the doT engine will proccess
     */
-    getContentFromTemplate(fileName, variables = {}) {
+    getContentFromTemplate(fileName, data = {}) {
         let fileContent = this.fileManager.readFileSync(fileName, 'utf8');
-        var template = this.templateManager.compile(fileContent);
-        variables.preventIdent = true;
-        return template(variables);
+        var template = new Template(fileContent).compile(data);
+        return template;
     }
 
-    makeFileFromTemplate(destFilePath, templateFilePath, variables = {}) {
-        let content = this.getContentFromTemplate(templateFilePath, variables);
+    makeFileFromTemplate(destFilePath, templateFilePath, data = {}) {
+        let content = this.getContentFromTemplate(templateFilePath, data);
         return this.writeFile(destFilePath, content);
     }
 
