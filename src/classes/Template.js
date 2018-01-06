@@ -51,6 +51,7 @@ class Template {
         this.generatedCode = 'var codeBlocks = [];\n';
         this.actualLineIsLogic = false;
         this.previousLineIsLogic = false;
+        this.addHelperFunctions();
     }
 
     compile(data) {
@@ -63,17 +64,30 @@ class Template {
         });
         
         this.finishGeneratedCode();
-        console.log(this.generatedCode)
 
         return new Function(this.generatedCode.replace(/[\r\t\n]/g, '')).apply(data);
     }
 
-    treatTemplateCode() {
-        // Removes breaklines from logic blocks
-        this.template = this.template.replace(/(\r\n|\n|\r||\u2028|\u2029){1}([^(\r\n|\n|\r||\u2028|\u2029)])(\t| )*(<%)/g, '<%');
-        //this.template = this.template.replace(/(\r\n|\n|\r||\u2028|\u2029){1}([^(\r\n|\n|\r||\u2028|\u2029)])(\t| )*(<up)/g, '<up');
+    addHelperFunctions() {
+        
+        let removeLastBreakLine = function() {
+            let lastCodeBlockIndex = codeBlocks.length - 1;
+            codeBlocks[lastCodeBlockIndex - 1] = codeBlocks[lastCodeBlockIndex - 1].replace(/(\r\n|\n|\r|\u2028|\u2029){1}([^(\r\n|\n|\r|\u2028|\u2029)])(\t| )*$/, '')
+        }
+        
+        this.generatedCode += 'this.removeLastBreakLine = ' + removeLastBreakLine.toString() + ';\n';
+    }
 
-        // Removes spaces and breaklines after lineup logic block
+    treatTemplateCode() {
+        // Remove comments
+        this.template = this.template.replace(/(\r\n|\n|\r|\u2028|\u2029){1}([^(\r\n|\n|\r|\u2028|\u2029)])(\t| )*(<#)(.*)(#>)/g, '');
+
+        // Remove breaklines from logic blocks
+        this.template = this.template.replace(/(\r\n|\n|\r|\u2028|\u2029){1}([^(\r\n|\n|\r|\u2028|\u2029)])(\t| )*(<%)/g, '<%');
+        this.template = this.template.replace(/(\r\n|\n|\r||\u2028|\u2029){1}([^(\r\n|\n|\r||\u2028|\u2029)])(\t| )*(<up)/g, '<up');
+
+        // Remove spaces and breaklines after lineup logic block
+        this.template = this.template.replace(/(up>)(\r\n|\n|\r|\u2028|\u2029){1}([^(\r\n|\n|\r|\u2028|\u2029)])(\t| )*/g, 'up>');
     }
 
     separateTextFromCodeBlocks() {
@@ -91,7 +105,6 @@ class Template {
         }
 
         this.addTextBlock(this.template.substr(cursor, this.template.length - cursor));
-        //this.removeUnwantedLines();
     }
 
     addAllJavaScriptBlocks(templateMatch) {
@@ -110,50 +123,7 @@ class Template {
             type: type
         };
 
-        // Detect LineUP (Return the content to the previous lines)
-        if(textBlock.content.match(matchJavascriptCodeLineUp)) {
-            textBlock.content = textBlock.content.replace('lineup', '');
-            textBlock.lineUp = true;
-        }
-
         this.textBlocks.push(textBlock);
-    }
-
-    /**
-     * This method will remove the unwanted lines from the template
-     * These lines are resulting from the logic lines inside the template
-     */
-    removeUnwantedLines() {
-        this.textBlocks.forEach((block, blockIndex) => {
-            if(block.type === 'LOGIC') {
-                block.lineUp ? this.removeAllPreviousSpaces(blockIndex) : this.removePreviousBreakLine(blockIndex);
-            }
-        });
-    }
-
-    removePreviousBreakLine(blockIndex, removeSpacesToo = false) {
-        let previousBlock = this.textBlocks[blockIndex - 1],
-            lastBreakLine,
-            lastBreakLineResult,
-            lastBreakLineIndex,
-            lastBreakLineMatch = /(\r\n|\n|\r){1}(?=([^(\r\n|\n|\r)])*$)/, // Last Break Line
-            onlyWhiteSpacesMatch = /^(\r\n|\n|\r)(\s|\t)*$/g; // Break Line only with white spaces after
-
-        lastBreakLineResult = lastBreakLineMatch.exec(previousBlock.content);
-        lastBreakLineIndex = (lastBreakLineResult) ? lastBreakLineResult.index : null;
-        lastBreakLine = (lastBreakLineIndex) ? previousBlock.content.substring(lastBreakLineIndex) : null;
-
-        if(onlyWhiteSpacesMatch.test(lastBreakLine)) {
-            let textToRemove = (removeSpacesToo) ? lastBreakLine : lastBreakLineMatch;
-            previousBlock.content = previousBlock.content.replace(textToRemove, '');
-        }
-    }
-
-    removeAllPreviousSpaces(blockIndex) {
-        //this.removePreviousBreakLine(blockIndex, true);
-        let block = this.textBlocks[blockIndex + 1];
-        block.content = block.content.replace(/(\r\n|\n|\r)*/g, ''); // Remove break lines
-        block.content = block.content.replace(/(\s|\t)*/g, ''); // Remove white spaces
     }
 
     addLine(block) {
