@@ -4,7 +4,41 @@ class Template {
 
     constructor(template) {
         this.template = template;
+        this.initSettings();
         this.resetTemplate();
+    }
+
+    initSettings() {
+        this.settings = {
+            blocksMatch: '',
+            blocks: {
+                logic: {
+                    index: 1,
+                    match: '<%(.+?)%>',
+                    type: 'LOGIC'
+                },
+                variable: {
+                    index: 2,
+                    match: '<\\$(.+?)\\$>',
+                    type: 'VARIABLE'
+                }
+            }
+        };
+
+        this.setAllBlocksMatching();
+    }
+
+    /**
+     * Set all the blocks regular expressions to future search on the template
+     */
+    setAllBlocksMatching() {
+        let matches = [];
+
+        for (const [index,block] of Object.entries(this.settings.blocks)) {
+            matches.push(block.match);
+        }
+
+        this.settings.blocksMatch = matches.join('|');
     }
 
     resetTemplate() {
@@ -16,42 +50,56 @@ class Template {
 
     compile(data) {
         this.resetTemplate();
+        this.treatTemplateCode();
         this.separateTextFromCodeBlocks();
 
         this.textBlocks.forEach(block => {
-            console.log(this.convertLineCharacters(block.content))
             this.addLine(block);
         });
         
         this.finishGeneratedCode();
-        //console.log(this.generatedCode);
+        console.log(this.generatedCode)
 
         return new Function(this.generatedCode.replace(/[\r\t\n]/g, '')).apply(data);
     }
 
+    treatTemplateCode() {
+        // Removes breaklines from logic blocks
+        this.template = this.template.replace(/(\r\n|\n|\r||\u2028|\u2029){1}([^(\r\n|\n|\r||\u2028|\u2029)])(\t| )*(<%)/g, '<%');
+    }
+
     separateTextFromCodeBlocks() {
-        let matchBlocks = new RegExp("<%(.+?)%>", "g"),
+        let matchBlocks = new RegExp(this.settings.blocksMatch, "g"),
             cursor = 0,
             match;
 
         while(match = matchBlocks.exec(this.template)) {
+
             this.addTextBlock(this.template.slice(cursor, match.index));
-            this.addTextBlock(match[1], true);
+            this.addAllJavaScriptBlocks(match);
 
             cursor = match.index + match[0].length;
+            
         }
 
         this.addTextBlock(this.template.substr(cursor, this.template.length - cursor));
-        this.removeUnwantedLines();
-        //console.log(this.textBlocks);
+        //this.removeUnwantedLines();
     }
 
-    addTextBlock(content, isJavascript = false) {
-        
-        let matchJavascriptCodeLineUp = /(^( (lineup)( )*)(if|for|else|switch|case|break|{|}))(.*)?/g;
+    addAllJavaScriptBlocks(templateMatch) {
+        for (const [index,block] of Object.entries(this.settings.blocks)) {
+            if(templateMatch[block.index]) {
+                this.addTextBlock(templateMatch[block.index], true, block.type);
+            }
+        }
+    }
+
+    addTextBlock(content, isJavascript = false, type = 'TEXT') {
+        let matchJavascriptCodeLineUp = /(^( (lineup)( )*)(var|let|console|if|for|else|switch|case|break|{|}))(.*)?/g;
         let textBlock = {
             content: content,
-            isJavascript: isJavascript
+            isJavascript: isJavascript,
+            type: type
         };
 
         // Detect LineUP (Return the content to the previous lines)
@@ -60,19 +108,7 @@ class Template {
             textBlock.lineUp = true;
         }
 
-        textBlock.type = this.getBlockContentType(textBlock);
-
         this.textBlocks.push(textBlock);
-    }
-
-    getBlockContentType(block) {
-        let matchJavascriptCode = /(^( )*(if|for|else|switch|case|break|{|}))(.*)?/g;
-
-        if(block.isJavascript) {
-            return (block.content.match(matchJavascriptCode)) ? 'LOGIC' : 'VARIABLE';
-        }
-
-        return 'TEXT';
     }
 
     /**
@@ -106,7 +142,7 @@ class Template {
     }
 
     removeAllPreviousSpaces(blockIndex) {
-        this.removePreviousBreakLine(blockIndex, true);
+        //this.removePreviousBreakLine(blockIndex, true);
         let block = this.textBlocks[blockIndex + 1];
         block.content = block.content.replace(/(\r\n|\n|\r)*/g, ''); // Remove break lines
         block.content = block.content.replace(/(\s|\t)*/g, ''); // Remove white spaces

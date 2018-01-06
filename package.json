@@ -25,6 +25,8 @@
     "handlebars-helpers": "^0.9.8",
     "js-yaml": "^3.9.1",
     "ncp": "^2.0.0",
+    "object.entries": "^1.0.4",
+    "object.values": "^1.0.4",
     "pluralize": "^7.0.0",
     "shelljs": "^0.7.8"
   }

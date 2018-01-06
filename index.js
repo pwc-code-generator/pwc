@@ -7,7 +7,19 @@ const
     // Modules
     colors = require('colors'),
     commands = require('./src/modules/commands'),
-    projectParser = require('./src/modules/projectParser');
+    projectParser = require('./src/modules/projectParser'),
+
+    // Shim
+    objectEntries = require('object.entries'),
+    objectValues = require('object.values');
+
+    if (!Object.values) {
+        objectValues.shim();
+    }
+
+    if (!Object.entries) {
+        objectEntries.shim();
+    }
 
 module.exports = {
     init: function() {
