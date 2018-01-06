@@ -21,7 +21,12 @@ class Template {
                     index: 2,
                     match: '<\\$(.+?)\\$>',
                     type: 'VARIABLE'
-                }
+                },
+                logicLineUp: {
+                    index: 3,
+                    match: '<up(.+?)up>',
+                    type: 'LOGIC'
+                },
             }
         };
 
@@ -66,6 +71,9 @@ class Template {
     treatTemplateCode() {
         // Removes breaklines from logic blocks
         this.template = this.template.replace(/(\r\n|\n|\r||\u2028|\u2029){1}([^(\r\n|\n|\r||\u2028|\u2029)])(\t| )*(<%)/g, '<%');
+        //this.template = this.template.replace(/(\r\n|\n|\r||\u2028|\u2029){1}([^(\r\n|\n|\r||\u2028|\u2029)])(\t| )*(<up)/g, '<up');
+
+        // Removes spaces and breaklines after lineup logic block
     }
 
     separateTextFromCodeBlocks() {
