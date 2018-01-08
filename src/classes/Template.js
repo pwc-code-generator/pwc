@@ -72,7 +72,7 @@ class Template {
         
         let removeLastBreakLine = function() {
             let lastCodeBlockIndex = codeBlocks.length - 1;
-            codeBlocks[lastCodeBlockIndex - 1] = codeBlocks[lastCodeBlockIndex - 1].replace(/(\r\n|\n|\r|\u2028|\u2029){1}([^(\r\n|\n|\r|\u2028|\u2029)])(\t| )*$/, '')
+            codeBlocks[lastCodeBlockIndex - 1] = codeBlocks[lastCodeBlockIndex - 1].replace(/(\r\n|\n|\r|\u2028|\u2029){1}(\t| )*$/, '')
         }
         
         this.generatedCode += 'this.removeLastBreakLine = ' + removeLastBreakLine.toString() + ';\n';
@@ -80,14 +80,14 @@ class Template {
 
     treatTemplateCode() {
         // Remove comments
-        this.template = this.template.replace(/(\r\n|\n|\r|\u2028|\u2029){1}([^(\r\n|\n|\r|\u2028|\u2029)])(\t| )*(<#)(.*)(#>)/g, '');
+        this.template = this.template.replace(/(\r\n|\n|\r|\u2028|\u2029){1}(\t| )*(<#)(.*)(#>)/g, '');
 
         // Remove breaklines from logic blocks
-        this.template = this.template.replace(/(\r\n|\n|\r|\u2028|\u2029){1}([^(\r\n|\n|\r|\u2028|\u2029)])(\t| )*(<%)/g, '<%');
-        this.template = this.template.replace(/(\r\n|\n|\r||\u2028|\u2029){1}([^(\r\n|\n|\r||\u2028|\u2029)])(\t| )*(<up)/g, '<up');
+        this.template = this.template.replace(/(\r\n|\n|\r|\u2028|\u2029){1}(\t| )*(<%)/g, '<%');
+        this.template = this.template.replace(/(\r\n|\n|\r||\u2028|\u2029){1}(\t| )*(<up)/g, '<up');
 
         // Remove spaces and breaklines after lineup logic block
-        this.template = this.template.replace(/(up>)(\r\n|\n|\r|\u2028|\u2029){1}([^(\r\n|\n|\r|\u2028|\u2029)])(\t| )*/g, 'up>');
+        this.template = this.template.replace(/(up>)(\r\n|\n|\r|\u2028|\u2029){1}(\t| )*/g, 'up>');
     }
 
     separateTextFromCodeBlocks() {
@@ -117,6 +117,11 @@ class Template {
 
     addTextBlock(content, isJavascript = false, type = 'TEXT') {
         let matchJavascriptCodeLineUp = /(^( (lineup)( )*)(var|let|console|if|for|else|switch|case|break|{|}))(.*)?/g;
+
+        if(type == 'TEXT') {
+            content = this.convertTextSpecialCharacters(content);
+        }
+
         let textBlock = {
             content: content,
             isJavascript: isJavascript,
@@ -132,6 +137,11 @@ class Template {
         } else {
             this.generatedCode += 'codeBlocks.push("' + this.convertLineCharacters(block.content) + '");\n';
         }
+    }
+
+    convertTextSpecialCharacters(content) {
+        content = content.replace(/\\/g, '\\\\');
+        return content;
     }
 
     convertLineCharacters(line) {

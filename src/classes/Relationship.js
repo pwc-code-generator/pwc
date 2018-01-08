@@ -102,6 +102,14 @@ class Relationship {
         }
     }
 
+    getForeignKeyName() {
+        return this.foreignKeyName;
+    }
+
+    hasDifferentForeignKeyName() {
+        return this.differentForeignKeyName;
+    }
+
     setElement() {
         this.element = (this.parsedRelationship.element !== undefined) ? this.parsedRelationship.element : this.getDefaultElement();
     }
@@ -123,6 +131,10 @@ class Relationship {
 
     getValidation() {
         return this.validation;
+    }
+
+    getValidationAsString() {
+        return this.validationString;
     }
 
     setRequired() {

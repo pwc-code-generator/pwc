@@ -66,7 +66,7 @@ class Util {
     deleteFile(destFilePath) {
         if(this.fileManager.existsSync(destFilePath)) {
             console.log('Removing File: '.yellow.bold + destFilePath);
-            return this.fileManager.unlink(destFilePath);
+            return this.fileManager.unlinkSync(destFilePath);
         }
 
         return false;

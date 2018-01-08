@@ -46,7 +46,7 @@ class Field {
         this.default = (parsedField.default !== undefined) ? parsedField.default : null;
         this.hasDefault = (parsedField.default !== undefined) ? true : false;
         this.inList = (parsedField.inList !== undefined) ? parsedField.inList : true;
-        this.isFileField = false;
+        this.fileField = false;
         this.isImageField = false;
     }
 
@@ -70,6 +70,10 @@ class Field {
         return this.validation;
     }
 
+    getValidationAsString() {
+        return this.validation;
+    }
+
     getElement() {
         return this.element;
     }
@@ -82,7 +86,7 @@ class Field {
         return this.hasDefault;
     }
 
-    getInList() {
+    isInList() {
         return this.inList;
     }
 
@@ -98,7 +102,7 @@ class Field {
     }
 
     setIsFileOrImageField() {
-        this.isFileField = (this.type == 'file' || this.type == 'image');
+        this.fileField = (this.type == 'file' || this.type == 'image');
         this.isImageField = (this.type == 'image');
     }
 
@@ -135,12 +139,16 @@ class Field {
         return this.value;
     }
 
+    isFileField() {
+        return this.fileField;
+    }
+
     addValidationRules() {
         if(this.isImageField) {
             this.addValitationRule('image');
         }
 
-        if(this.isFileField) {
+        if(this.fileField) {
             this.addValitationRule('file');
         }
     }
