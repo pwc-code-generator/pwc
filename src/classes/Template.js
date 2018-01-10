@@ -86,7 +86,7 @@ class Template {
 
     treatTemplateCode() {
         // Remove comments
-        this.template = this.template.replace(/(\r\n|\n|\r|\u2028|\u2029){1}(\t| )*(<#)(.*)(#>)/g, '');
+        this.template = this.template.replace(/(\r\n|\n|\r|\u2028|\u2029)?(\t| )*(<#)(.*)(#>)/g, '');
 
         // Remove breaklines from logic blocks
         this.template = this.template.replace(/(\r\n|\n|\r|\u2028|\u2029){1}(\t| )*(<%)/g, '<%');

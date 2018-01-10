@@ -71,7 +71,7 @@ class Field {
     }
 
     getValidationAsString() {
-        return this.validation;
+        return this.validationString;
     }
 
     getElement() {
