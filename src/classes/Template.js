@@ -1,11 +1,17 @@
 'use strict';
 
+const
+    check = require('syntax-error');
+
 class Template {
 
-    constructor(template) {
+    constructor(template, name = 'UNKNOWN') {
         this.template = template;
+        this.name = name;
         this.initSettings();
         this.resetTemplate();
+
+        console.log('Get template: '.blue.bold + this.name);
     }
 
     initSettings() {
@@ -64,8 +70,8 @@ class Template {
         });
         
         this.finishGeneratedCode();
-
-        return new Function(this.generatedCode.replace(/[\r\t\n]/g, '')).apply(data);
+        
+        return new Function(this.generatedCode).apply(data);
     }
 
     addHelperFunctions() {
@@ -155,6 +161,17 @@ class Template {
 
     finishGeneratedCode() {
         this.generatedCode += 'return codeBlocks.join("");';
+        this.generatedCode.replace(/[\r\t\n]/g, '');
+        this.checkGeneratedCode();
+    }
+
+    checkGeneratedCode() {
+        let error = check(this.generatedCode);
+        if(error) {
+            console.error('TEMPLATE SYNTAX - ERROR DETECTED'.red);
+            console.error(error);
+            console.error(Array(76).join('-'));
+        }
     }
 
 }

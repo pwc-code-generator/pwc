@@ -31,18 +31,23 @@ class Util {
 
     /**
     * Get a file, proccess it with data and return the content
-    * - fileName - The file name and path in case of external file
+    * - fileNamePath - The file name and path in case of external file
     * - data - The data that the doT engine will proccess
     */
-    getContentFromTemplate(fileName, data = {}) {
-        let fileContent = this.fileManager.readFileSync(fileName, 'utf8');
-        var template = new Template(fileContent).compile(data);
+    getContentFromTemplate(fileNamePath, data = {}) {
+        let fileContent = this.fileManager.readFileSync(fileNamePath, 'utf8');
+        var template = new Template(fileContent, this.getFileNameFromPath(fileNamePath)).compile(data);
         return template;
     }
 
     makeFileFromTemplate(destFilePath, templateFilePath, data = {}) {
         let content = this.getContentFromTemplate(templateFilePath, data);
         return this.writeFile(destFilePath, content);
+    }
+
+    getFileNameFromPath(path) {
+        let namePosition = path.search(/[ \w-]+\.\w+$/);
+        return path.substr(namePosition);
     }
 
     /**

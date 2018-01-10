@@ -113,9 +113,11 @@ class Field {
             itemsValues.forEach((item, index) => {
                 let itemParts = item.trim().split('|'),
                     itemObject = {
-                        ìndex: index,
+                        index: index,
                         value: itemParts[0],
-                        label: itemParts[1] || changeCase.upperCaseFirst(itemParts[0])
+                        label: itemParts[1] || changeCase.upperCaseFirst(itemParts[0]),
+                        getValue: function() { return this.value; },
+                        getLabel: function() { return this.label; }
                     };
 
                 itemsForString.push(itemParts[0]);
@@ -177,6 +179,18 @@ class Field {
         } else {
             this.mimeTypes = null;
         }
+    }
+
+    hasMimeTypes() {
+        return (this.mimeTypes) ? true : false;
+    }
+
+    getMimeTypes() {
+        return this.mimeTypes;
+    }
+
+    getMimeTypesAsString() {
+        return this.mimeTypesString;
     }
 
     setRequired() {
