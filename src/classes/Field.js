@@ -47,7 +47,7 @@ class Field {
         this.hasDefault = (parsedField.default !== undefined) ? true : false;
         this.inList = (parsedField.inList !== undefined) ? parsedField.inList : true;
         this.fileField = false;
-        this.isImageField = false;
+        this.imageField = false;
     }
 
     getName() {
@@ -98,12 +98,13 @@ class Field {
         let typeParts = type.trim().split(',');
         this.type = typeParts[0];
         this.size = typeParts[1] || null;
+        this.dateField = (this.type == 'date' || this.type == 'datetime' || this.type == 'timezone');
         this.setIsFileOrImageField();
     }
 
     setIsFileOrImageField() {
         this.fileField = (this.type == 'file' || this.type == 'image');
-        this.isImageField = (this.type == 'image');
+        this.imageField = (this.type == 'image');
     }
 
     setItems(items) {
@@ -145,8 +146,12 @@ class Field {
         return this.fileField;
     }
 
+    isImageField() {
+        return this.imageField;
+    }
+
     addValidationRules() {
-        if(this.isImageField) {
+        if(this.imageField) {
             this.addValitationRule('image');
         }
 
@@ -220,8 +225,8 @@ class Field {
             'decimal': 'number',
             'boolean': 'checkbox',
             'date': 'date',
-            'datetime': 'date',
-            'timestamp': 'date',
+            'datetime': 'datetime',
+            'timestamp': 'datetime',
             'time': 'text',
             'enum': 'select',
             'file': 'file',
