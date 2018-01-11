@@ -15,6 +15,7 @@ var filter = {
         this.filterName();
         this.initModels();
         this.enrichRelationships();
+        this.orderModels();
         
         return this.project;
     },
@@ -33,8 +34,6 @@ var filter = {
         Object.keys(this.parsedProject.models).map((modelName, index) => {
             let parsedModel = this.parsedProject.models[modelName];
             
-            // Index used to indentify the model
-            parsedModel.index = index;
             parsedModel.name = modelName;
             let model = new Model(parsedModel);
 
@@ -62,7 +61,36 @@ var filter = {
      * the "PARENT" model needs to always run before the "CHILD" model. Otherwise, the database generation can broken.
      */
     orderModels: function() {
+        console.log('Ordering models...'.blue.bold);
 
+        this.project.getModels().sort((firstModel, secondModel) => {
+
+            // First model belongs to secondModel
+            if(firstModel.belongsTo(secondModel)) {
+                return 1; // Send firstModel to end
+            }
+
+            if(secondModel.belongsTo(firstModel)) {
+                return -1; // Send firstModel to start
+            }
+
+            return 1;
+
+        });
+
+        this.setNewModelsIndex();
+    },
+
+    setNewModelsIndex: function() {
+        this.project.getModels().forEach((model, index) => {
+            model.index = index;
+        });
+    },
+
+    showAllModelNames: function() {
+        this.project.getModels().forEach((model) => {
+            console.log('Model ' + model.index + ': ' + model.getName());
+        });
     }
 
 };

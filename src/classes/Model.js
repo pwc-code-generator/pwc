@@ -216,6 +216,18 @@ class Model {
         });
     }
 
+    belongsTo(model) {
+        let belongs = false;
+
+        this.belongsToRelationships.forEach((relationship) => {
+            if(relationship.relatedModel == model) {
+                belongs = true;
+            }
+        });
+
+        return belongs;
+    }
+
     removeUnwantedAttributes() {
         delete this.parsedModel;
     }
