@@ -16,6 +16,8 @@ var filter = {
         this.initModels();
         this.enrichRelationships();
         this.orderModels();
+
+        this.project.setIndex(parsedProject.index);
         
         return this.project;
     },

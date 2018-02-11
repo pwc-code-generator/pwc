@@ -28,6 +28,14 @@ class Project {
         return this.name;
     }
 
+    setIndex(index) {
+        this.index = index;
+    }
+
+    getIndex() {
+        return this.index;
+    }
+
     setModels(models) {
         this.models = models;
     }
