@@ -57,7 +57,7 @@ class Model {
     buildNames() {
         this.name = this.parsedModel.name;
         this.nameCapitalized = changeCase.upperCaseFirst(this.name);
-        this.namePlural = pluralize(this.name);
+        this.namePlural = this.parsedModel.namePlural || pluralize(this.name);
         this.namePluralCapitalized = changeCase.upperCaseFirst(this.namePlural);
         this.nameSnakeCase = changeCase.snakeCase(this.name);
         this.namePluralSnakeCase = changeCase.snakeCase(this.namePlural);
