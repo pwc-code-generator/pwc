@@ -93,6 +93,14 @@ class Relationship {
         return changeCase.paramCase(this.aliasPlural);
     }
 
+    getAliasCapitalized() {
+        return changeCase.upperCaseFirst(this.alias);
+    }
+
+    getAliasPluralCapitalized() {
+        return changeCase.upperCaseFirst(this.aliasPlural);
+    }
+
     setDisplayField() {
         this.displayField = this.parsedRelationship.displayField || 'name';
     }
