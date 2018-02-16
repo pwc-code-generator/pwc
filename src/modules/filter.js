@@ -76,7 +76,7 @@ var filter = {
                 return -1; // Send firstModel to start
             }
 
-            return 1;
+            return 0;
 
         });
 
