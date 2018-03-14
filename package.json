@@ -17,20 +17,17 @@
   "author": "Tiago Silva Pereira Rodrigues",
   "license": "MIT",
   "dependencies": {
-    "change-case": "^3.0.1",
-    "colors": "^1.1.2",
-    "command-line-args": "^4.0.7",
-    "dot": "^1.1.2",
-    "handlebars": "^4.0.10",
-    "handlebars-helpers": "^0.9.8",
-    "js-yaml": "^3.9.1",
+    "change-case": "^3.0.2",
+    "colors": "^1.2.1",
+    "command-line-args": "^5.0.2",
+    "js-yaml": "^3.11.0",
     "ncp": "^2.0.0",
     "object.entries": "^1.0.4",
     "object.values": "^1.0.4",
     "pluralize": "^7.0.0",
-    "shelljs": "^0.7.8"
+    "shelljs": "^0.8.1"
   },
   "devDependencies": {
-    "syntax-error": "^1.3.0"
+    "syntax-error": "^1.4.0"
   }
 }
