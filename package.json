@@ -25,9 +25,8 @@
     "object.entries": "^1.0.4",
     "object.values": "^1.0.4",
     "pluralize": "^7.0.0",
-    "shelljs": "^0.8.1"
+    "shelljs": "^0.8.1",
+    "silverb": "0.0.1"
   },
-  "devDependencies": {
-    "syntax-error": "^1.4.0"
-  }
+  "devDependencies": {}
 }
