@@ -172,6 +172,10 @@ class Model {
         }
     }
 
+    getFields() {
+        return this.fields;
+    }
+
     setupRelationships() {
         this.buildBelongsToRelationship(this.parsedModel.belongsTo);
         this.buildBelongsToManyRelationship(this.parsedModel.belongsToMany);
