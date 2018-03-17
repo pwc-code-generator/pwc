@@ -220,6 +220,26 @@ class Model {
         });
     }
 
+    getRelationships() {
+        return this.relationships;
+    }
+
+    getBelongsToRelationships() {
+        return this.belongsToRelationships;
+    }
+
+    getBelongsToManyRelationships() {
+        return this.belongsToManyRelationships;
+    }
+
+    getHasOneRelationships() {
+        return this.hasOneRelationships;
+    }
+
+    getHasManyRelationships() {
+        return this.hasManyRelationships;
+    }
+
     belongsTo(model) {
         let belongs = false;
 
