@@ -116,7 +116,7 @@ The file is simple and practical. But if you want a *Project File* generator, yo
 
 ## The *Smart Project Object*
 
-The *Smart Project Object* is a javascript object with methods and tools that can be used by the generator to generate the code with practicality. You can see more details about these methods on the documentation.
+The *Smart Project Object* is a javascript object with methods and tools that can be used by the generator to generate the code with practicality. You can see more details about these methods on the [documentation](https://github.com/pwc-code-generator/docs/blob/master/3_Creating_Generators.md).
 
 ## Generators
 
