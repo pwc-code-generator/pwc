@@ -12,6 +12,10 @@ You can see these tools and methods on the [Generator Sample Readme](https://git
 
 PWC is a little like [Yeoman](http://yeoman.io/), but more focused on CRUD generation, built with a [Model Driven](https://en.wikipedia.org/wiki/Model-driven_architecture) structure.
 
+## Docs
+
+You can see the documentation on this [repository](https://github.com/pwc-code-generator/docs).
+
 ## Requirements
 
 You need these technologies installed on your machine to use PWC:
