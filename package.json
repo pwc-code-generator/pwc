@@ -1,5 +1,5 @@
 {
-  "name": "pwc",
+  "name": "pwc-code-generator",
   "version": "0.0.1",
   "description": "Poweful code generator",
   "main": "index.js",

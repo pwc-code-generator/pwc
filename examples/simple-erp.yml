@@ -1,40 +1,37 @@
 name: Teste2
 models:
-  brand:
-    description: Marca|Marcas, a|as
+  brand: # <- The model name
+    description: The Brand|The Brands # Optional, default is the name capitalized
     fields:
-      name:
-        label: Nome
+      name: # <- The field name
+        label: Name # Optional, default is the name capitalized
         type: string,128
         validation: required
         searchable: true
       email:
-        label: E-mail
+        label: E-mail # Optional
         type: string,128
         element: email
         validation: required|email
     hasMany:
-      product:
+      product: # <- The relationship "Related Model"
         element: false
       brandPhone:
         alias: phone
         element: simple-datagrid
-        foreignKeyName: owner_id # Só quando for nome diferente, funciona para hasOne, hasMany e belongsTo
+        foreignKeyName: owner_id # Only for custom fk names, works for hasOne, hasMany e belongsTo
 
   product:
-    description: Produto|Produtos, o|os
     fields:
       name:
-        label: Nome
         type: string,128
         element: text
         validation: required
         searchable: true
       type:
-        label: Tipo
         type: enum
-        items: physical|Físico,digital,undefined|Indefinido
-        default: physical
+        items: physical,digital|Is digital?,undefined # Enum items
+        default: physical # Database default value
         validation: required
     belongsTo:
       brand:
@@ -45,10 +42,8 @@ models:
         element: simple-datagrid
 
   client:
-    description: Cliente|Clientes, o|os
     fields:
       name:
-        label: Nome
         type: string,128
         element: text
         validation: required
@@ -58,17 +53,14 @@ models:
         element: false
 
   order:
-    description: Pedido|Pedidos, o|os
     fields:
       name:
-        label: Data de Abertura
         type: date
         validation: required|date
         searchable: true
       status:
-        label: Status
         type: enum
-        items: opened|Aberto,closed|Fechado
+        items: opened,closed
         default: opened
         validation: required
     belongsTo:
@@ -80,16 +72,13 @@ models:
         element: simple-datagrid
 
   brandPhone:
-    description: Telefone|Telefones, o|os
     onlyModel: true
     isRelationship: true
     fields:
       phone:
-        label: Telefone
         type: string,32
         validation: required|min:5
       company:
-        label: Operadora
         type: enum
         items: oi,vivo,tim,claro,nextel
         default: oi
@@ -101,34 +90,28 @@ models:
         validation: required
 
   grid:
-    description: Grade de Produto|Grades de Produto, o|os
+    description: Product Grid|Product Grids
     onlyModel: true
     isRelationship: true
     fields:
       description:
-        label: Descrição
         type: string,128
         validation: required|max:128
       barcode:
-        label: Cód. Barras
         type: string,128
         validation: required|max:128
       measure:
-        label: Un. Medida
         type: enum
         items: unity|Unidade, meters|Metro
         default: unity
         validation: required
       size:
-        label: Tamanho
         type: string,128
         validation: required|max:128
       color:
-        label: Cor
         type: string,128
         validation: required|max:128
       price:
-        label: Preço
         type: decimal
         validation: required
     belongsTo: 
@@ -137,20 +120,17 @@ models:
         validation: required
 
   orderItem:
-    description: Item do Pedido|Itens do Pedido, o|os
+    description: Order Item|Order Items
     onlyModel: true
     isRelationship: true
     fields:
       quantity:
-        label: Quantidade
         type: decimal
         validation: required
       discount:
-        label: Desconto
         type: decimal
         validation: required
       rate:
-        label: Acréscimos
         type: decimal
         validation: required
     belongsTo: 
@@ -158,5 +138,5 @@ models:
         element: false
         validation: required
       grid:
-        displayField: description # Especifica qual campo será mostrado no combobox de seleção
+        displayField: description # Specifies the field that will appear on the Select Box
         validation: required

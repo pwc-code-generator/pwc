@@ -1,0 +1,187 @@
+name: 'Sell System - Full File Syntax'
+index: project6
+models:
+    user:
+        namePlural: users
+        description: User|Users
+        onlyModel: true
+        isRelationship: false
+    product:
+        namePlural: products
+        description: Product|Products
+        onlyModel: false
+        isRelationship: false
+        fields:
+            name:
+                type: string
+                element: text
+                label: Name
+                items: ''
+                validation: 'required|string|max:255'
+                searchable: true
+                inList: true
+            image:
+                type: image
+                element: file
+                label: Image
+                items: ''
+                validation: file
+                searchable: false
+                inList: false
+        hasMany:
+            grid:
+                alias: grids
+                element: simple-datagrid
+                validation: ''
+                foreignKeyName: product_id
+                displayField: null
+    order:
+        namePlural: orders
+        description: Order|Orders
+        onlyModel: false
+        isRelationship: false
+        fields:
+            date:
+                type: date
+                element: date
+                label: Date
+                items: ''
+                validation: required|date
+                searchable: true
+                inList: true
+        hasMany:
+            orderItem:
+                alias: orderItems
+                element: simple-datagrid
+                validation: ''
+                foreignKeyName: order_id
+                displayField: null
+            invoice:
+                alias: invoices
+                element: false
+                validation: required
+                foreignKeyName: invoice_id
+                displayField: null
+    orderItem:
+        namePlural: orderItems
+        description: 'Order Item|Order Items'
+        onlyModel: true
+        isRelationship: false
+        fields:
+            quantity:
+                type: decimal
+                element: number
+                label: Quantity
+                items: ''
+                validation: required
+                searchable: false
+                inList: true
+                value: '0'
+            discount:
+                type: decimal
+                element: number
+                label: Discount
+                items: ''
+                validation: required
+                searchable: false
+                inList: true
+                value: '0'
+            rate:
+                type: decimal
+                element: number
+                label: Rate
+                items: ''
+                validation: required
+                searchable: false
+                inList: true
+                value: '0'
+        belongsTo:
+            grid:
+                alias: grid
+                element: select
+                validation: ''
+                foreignKeyName: grid_id
+                displayField: color
+            order:
+                alias: orders
+                element: false
+                validation: required
+                foreignKeyName: order_id
+                displayField: name
+    grid:
+        namePlural: grids
+        description: Grid|Grids
+        onlyModel: true
+        isRelationship: false
+        fields:
+            color:
+                type: string
+                element: text
+                label: Color
+                items: ''
+                validation: ''
+                searchable: false
+                inList: true
+                value: white
+            size:
+                type: string
+                element: text
+                label: Size
+                items: ''
+                validation: required
+                searchable: false
+                inList: true
+                value: small
+            name:
+                type: string
+                element: text
+                label: Name
+                items: ''
+                validation: required
+                searchable: false
+                inList: true
+        hasMany:
+            orderItem:
+                alias: orderItems
+                element: false
+                validation: required
+                foreignKeyName: orderItem_id
+                displayField: null
+        belongsTo:
+            product:
+                alias: products
+                element: select
+                validation: required
+                foreignKeyName: product_id
+                displayField: name
+    invoice:
+        namePlural: invoices
+        description: Invoice|Invoices
+        onlyModel: false
+        isRelationship: false
+        fields:
+            date:
+                type: date
+                element: date
+                label: Date
+                items: ''
+                validation: required
+                searchable: true
+                inList: true
+            value:
+                type: decimal
+                element: number
+                label: Value
+                items: ''
+                validation: ''
+                searchable: false
+                inList: true
+                default: '0'
+                value: '0'
+        belongsTo:
+            order:
+                alias: order
+                element: select
+                validation: ''
+                foreignKeyName: order_id
+                displayField: id
