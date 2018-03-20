@@ -1,3 +1,5 @@
+[![Open Source Helpers](https://www.codetriage.com/pwc-code-generator/pwc/badges/users.svg)](https://www.codetriage.com/pwc-code-generator/pwc)
+
 # PWC Code Generator - Command Line Interface
 
 ## Introduction
